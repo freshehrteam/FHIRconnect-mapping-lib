@@ -24,6 +24,7 @@ mappings:
 # ========================================= genotype
             mappings:
               # TODO status missing add
+              - # TODO IMCN: copy status from parent at data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]/items[at0005]"
               - name: "genotype" # genotype mapping
                 with:
                   unidirectional: "openEHR->fhir" # all following are just for openEHR to FHIR
@@ -34,27 +35,36 @@ mappings:
                   mappings:
                     - name: "Diplotype"
                       with:
-                        fhir: "coding"
-                        openehr: "/items[openEHR-EHR-CLUSTER.pharmacogenetic_result.v0]/items[at0004]"
-                    - name: "component"
-                      with:
-                        fhir: "component.where(code.coding.code = '48018-6')"
-                        openehr: "$reference"
-                      followedBy:
+                        fhir: "code.coding.code = '84413-4')" # Genotype Display Name
+                        openehr: "/items[openEHR-EHR-CLUSTER.pharmacogenetic_test_result.v0]/items[at0004]" # Diplotype
+                      followedby:
                         mappings:
-                          - name: "analyteName"
-                            with:
-                              fhir: "valueCodeableConcept.coding"
-                              openehr: "/items[at0024]" #Name of body site
-                          - name: "geneSymbol"
-                            with:
-                              fhir: "valueCodeableConcept.coding"
-                              openehr: "/items[openEHR-EHR-CLUSTER.pharmacogenetic_result.v0]/items[at0003]" #Name of body site
                           - name: "manualMappings"
                             with:
                               fhir: "$fhirRoot"
                             manual:
-                              - name: "componentValueCodeable"
+                              - name: "valueCodeableConcept"
+                                fhir:
+                                  - path: "code.coding.code"
+                                    value: "84413-4"
+                                  - path: "code.coding.system"
+                                    value: "http://loinc.org"
+
+                    - name: "component"
+                      with:
+                        fhir: "component.where(code.coding.code = '48018-6')" # Gene Studied
+                        openehr: "$reference"
+                      followedBy:
+                        mappings:
+                          - name: "geneSymbol"
+                            with:
+                              fhir: "valueCodeableConcept.coding"
+                              openehr: "/items[openEHR-EHR-CLUSTER.pharmacogenetic_result.v0]/items[at0003]" # Gene symbol
+                          - name: "manualMappings"
+                            with:
+                              fhir: "$fhirRoot"
+                            manual:
+                              - name: "componentValueCodeableConcept"
                                 fhir:
                                   - path: "code.coding.code"
                                     value: "48018-6"
@@ -66,7 +76,8 @@ mappings:
                   operator: "equals"
                   condition: "http://hl7.org/fhir/uv/genomics-reporting/StructureDefinition/genotype"
 # ==================================== Phenotype
-# TODO status missing add
+              # TODO status missing add
+              # TODO IMCN: copy status from parent at data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]/items[at0005]"
               - name: "phenotype"
                 with:
                   unidirectional: "openEHR->fhir" # all following are just for openEHR to FHIR

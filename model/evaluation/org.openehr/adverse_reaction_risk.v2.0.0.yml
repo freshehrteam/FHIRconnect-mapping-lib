@@ -20,30 +20,15 @@ preprocessor:
     criteria: "entered-in-error"
 
 mappings:
-  #  - name: "id"
-  #    with:
-  #      fhir: "$resource.id"
-  #      openehr:  "$archetype/originating_system_item_ids" //CHECK!!
-  #
-  #  - name: "identifier"
-  #    with:
-  #      fhir: "$resource.identifier"
-  #      openehr: "$archetype/originating_system_item_ids" //CHECK!!
-  #
-  #  - name: "abatement-datetime"
-  #    with:
-  #      fhir: "$resource.abatement-datetime"
-  #      openehr: "$archetype//protocol[at0042]/items[at0062 |Date last updated]" # WHERE
+  - name: "lastReactionOccurrence"
+    with:
+      fhir: "$resource.lastReactionOccurrence"
+      openehr: "$archetype/data[at0001]/items[at0130]" #  |Onset of last reaction
 
-#  - name: "lastReactionOccurrence"
-#    with:
-#      fhir: "$resource.lastReactionOccurrence"
-#      openehr: "$$archetype/data[at0001]/items[at0130]" #  |Onset of last reaction
-
-#  - name: "clinicalStatus"
-#    with:
-#      fhir: "$resource.record"
-#      openehr: "$archetype/data[at0001]/items[at0130]" #  |Active/inactive status
+  - name: "clinicalStatus"
+    with:
+      fhir: "$resource.record"
+      openehr: "$archetype/data[at0001]/items[at0130]" #  |Active/inactive status
 
   - name: "verificationStatus"
     with:
@@ -123,32 +108,32 @@ mappings:
     with:
       fhir: "$resource.reaction.manifestation"
       openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]" # |Reaction description
-      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+    slotArchetype: "CLUSTER.adverse_reaction_event.v1"
 
   - name: "reactionDescription"
     with:
       fhir: "$resource.reaction.description"
       openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0007]" # |Reaction description
-      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+    slotArchetype: "CLUSTER.adverse_reaction_event.v1"
 
 #  - name: "reactionOnset"
 #    with:
 #      fhir: "$resource.onset"
 #      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0008]" # |Onset
 #      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
-
-  #  - name: "reactionExposureRoute"
-  #    with:
-  #      fhir: "$resource.severity"
-  #      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]" # |Reaction description
-  #      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
-
-  - name: "reactionSeverity"
-    with:
-      fhir: "$resource.severity"
-      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0010]" # |Severity
-      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
-
+#
+#  #  - name: "reactionExposureRoute"
+#  #    with:
+#  #      fhir: "$resource.severity"
+#  #      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]" # |Reaction description
+#  #      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+#
+#  - name: "reactionSeverity"
+#    with:
+#      fhir: "$resource.severity"
+#      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0010]" # |Severity
+#      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+#
 #  - name: "reactionNote"
 #    with:
 #      fhir: "$resource.note.text"

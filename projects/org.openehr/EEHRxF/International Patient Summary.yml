@@ -1,0 +1,21 @@
+grammar: FHIRConnect/v1.0.0
+type: context
+metadata:
+  name:  International_Patient_Summary
+  version: 0.0.1a
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
+    version: "2.0.0"
+  template:
+    id: "International Patient Summary"
+  archetypes:
+    - "EVALUATION.adverse_reaction_risk.v2"
+    - "CLUSTER.adverse_reaction_event.v1"
+
+  start: "EVALUATION.adverse_reaction_risk.v2"
+

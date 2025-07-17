@@ -182,7 +182,7 @@ mappings:
               - name: "allergyIntoleranceReference"
                 with:
                   fhir: "$fhirRoot"
-                  openehr: "content[openEHR-EHR-SECTION.adhoc.v1 and name/value='Allergies & Intolerances']/items[openEHR-EHR-EVALUATION.adverse_reaction_risk.v1]"
+                  openehr: "content[openEHR-EHR-SECTION.adhoc.v1 and name/value='Allergies and Intolerances']/items[openEHR-EHR-EVALUATION.adverse_reaction_risk.v1]"
                 slotArchetype: "EVALUATION.adverse_reaction_risk.v1"
 
 

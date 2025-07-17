@@ -28,7 +28,7 @@ context:
     - "IPS_medication_statement"
     - "IPS_composition"
     - "IPS_medication_admission"
-    - "ips_adverse_reaction_risk.v2"
+    - "EVALUATION.ips_adverse_reaction_risk.v2"
     - "IPS_problem_diagnosis"
     - "IPS_procedure"
     - "IPS_device_summary"

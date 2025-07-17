@@ -1,0 +1,151 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: EVALUATION.adverse_reaction_risk.v2
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.adverse_reaction_risk.v2
+    revision: 2.0.0
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/AllergyIntolerance
+
+preprocessor:
+  fhirCondition:
+    targetRoot: "$resource.verificationStatus" # exclude all conditions with entered-in-error, since there is no mapping for this code
+    targetAttribute: "coding.code"
+    operator: "not of"
+    criteria: "entered-in-error"
+
+mappings:
+  - name: "lastReactionOccurrence"
+    with:
+      fhir: "$resource.lastReactionOccurrence"
+      openehr: "$archetype/data[at0001]/items[at0130]" #  |Onset of last reaction
+
+  - name: "clinicalStatus"
+    with:
+      fhir: "$resource.record"
+      openehr: "$archetype/data[at0001]/items[at0130]" #  |Active/inactive status
+
+  - name: "verificationStatus"
+    with:
+      fhir: "$resource.verificationStatus"
+      openehr: "$archetype/data[at0001]/items[at0063]" #  |Verification status
+
+  - name: "type"
+    with:
+      fhir: "$resource.type"
+      openehr: "$archetype/data[at0001]/items[at0058]" #  |Type
+
+  - name: "criticality"
+    with:
+      fhir: "$resource.criticality"
+      openehr: "$archetype/data[at0001]/items[at0101]" # |Criticality
+
+  - name: "substance"
+    with:
+      fhir: "$resource.code"
+      openehr: "$archetype/data[at0001]/items[at0002]" # |Substance
+
+  - name: "onsetDateTime"
+    with:
+      fhir: "$resource.onsetDateTime"
+      openehr: "$archetype/data[at0001]/items[at0133]" # |Onset of first reaction <DV_DATETIME>
+
+  #  - name: "onsetAge"
+  #    with:
+  #      fhir: "$resource.onsetAge"
+  #      openehr: "$archetype/data[at0001]/items[at0133 | Onset of first reaction]" <DV_DURATION>
+  #
+  #  - name: "onsetPeriod"
+  #    with:
+  #      fhir: "$resource.recordedDate"
+  #      openehr: "$archetype/data[at0001]/items[at0133 | Onset of first reaction]" <DV_INTERVAL <DV_DATE_TIME> >
+  #
+  #  - name: "onsetRange"
+  #    with:
+  #      fhir: "$resource.recordedDate"
+  #      openehr: "$composition/context/start_time" # or ?? protoc
+  #
+  #  - name: "onsetString"
+  #    with:
+  #      fhir: "$resource.onsetString"
+  #      openehr: "$archetype/data[at0001]/items[at0133 | Onset of first reaction]" <DV_TEXT>
+
+  - name: "recorder"
+    with:
+      fhir: "$resource.recorder"
+      openehr: "$composition/composer" # often required therefore simplified mapping engine is to resolve Reference -> Composer
+
+  - name: "asserter"
+    with:
+      fhir: "$resource.asserter"
+      openehr: "$archetype/provider"  # often required therefore simplified mapping engine is to resolve Reference -> Provider
+
+  - name: "note"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/data[at0001]/items[at0006]" # |Comment
+  #  with:
+  #    fhir: "$resource.note.time"
+  #    openehr: "$archetype/data[at0001]/items[at0006]/originating_system_audit/time"
+  #  with:
+  #    fhir: "$resource.note.authorReference.display"
+  #    openehr: "$archetype/data[at0001]/items[at0006]/originating_system_audit/provider<PARTY_IDENTIFIED>.name"
+  #  with:
+  #    fhir: "$resource.note.authorReference.identifier"
+  #    openehr: "$archetype/data[at0001]/items[at0006]/originating_system_audit/provider<PARTY_IDENTIFIED>.identifier"
+
+#  - name: "reactionSubstance"
+#    with:
+#      fhir: "$resource.onset"
+#      openehr: "$archetype/data[at0001]/items[at0077]"
+
+  - name: "reactionManifestation"
+    with:
+      fhir: "$resource.reaction.manifestation"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]" # |Reaction description
+    slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+
+  - name: "reactionDescription"
+    with:
+      fhir: "$resource.reaction.description"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0007]" # |Reaction description
+    slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+
+#  - name: "reactionOnset"
+#    with:
+#      fhir: "$resource.onset"
+#      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0008]" # |Onset
+#      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+#
+#  #  - name: "reactionExposureRoute"
+#  #    with:
+#  #      fhir: "$resource.severity"
+#  #      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]" # |Reaction description
+#  #      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+#
+#  - name: "reactionSeverity"
+#    with:
+#      fhir: "$resource.severity"
+#      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0010]" # |Severity
+#      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+#
+#  - name: "reactionNote"
+#    with:
+#      fhir: "$resource.note.text"
+#      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]" # |Reaction description
+#      slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+
+#    with:
+#      fhir: "$resource.note.time"
+#      openehr: "$archetype/data[at0001]/items[at0006]/originating_system_audit/time"
+#    with:
+#      fhir: "$resource.note.authorReference.display"
+#      openehr: "$archetype/data[at0001]/items[at0006]/originating_system_audit/provider<PARTY_IDENTIFIED>.name"
+#    with:
+#      fhir:  "$resource.note.authorReference.identifier"
+#      openehr: "$archetype/data[at0001]/items[at0006]/originating_system_audit/provider<PARTY_IDENTIFIED>.identifier"
